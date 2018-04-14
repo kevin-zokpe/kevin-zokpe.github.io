@@ -1,3 +1,3 @@
-# kevin-zokpe.github.io
+# STUM WATCHER
 
-I created this page so my team and I could optimize our speaking time during our Daily Stand Up Meeting. 
+I created the stunm-watcher app so my team and I could optimize our speaking time during our Daily Stand Up Meeting. 
