@@ -1,134 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>STUM WATCHER</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="https://capgemini.github.io/images/logo-square.png" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" integrity="sha256-iXUYfkbVl5itd4bAkFH5mjMEN5ld9t3OHvXX3IU8UxU=" crossorigin="anonymous" />
-   <style type="text/css">
-     
-   body{
-    text-align: center;
-   }
-   #logo {
-    text-align: left;
-   }
-   </style>
-    
-  </head>
-  <body>
-  <div class="fluid-container">
-    <img src="https://www.capgemini.com/wp-content/uploads/2017/10/cg_logo.jpg" alt="Smiley face" width="400" id="logo" style="padding: 80px 0 60px 0" />
-     
+	<head>
+		<title>STUM WATCHER</title>
+		<meta charset="utf-8">
+		<meta name="author" content="Kévin Zokpé">
+		<meta name="description" content="
+		l'application stum-watcher permet d'optimiser notre temps de parole lors de notre réunion quotidienne." />
+		<meta name="keywords" content="STUM, Capgemini, Team, Developement, Agile, Kévin Zokpé, Software, France, Rennes" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/png" href="https://capgemini.github.io/images/logo-square.png" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" integrity="sha256-iXUYfkbVl5itd4bAkFH5mjMEN5ld9t3OHvXX3IU8UxU=" crossorigin="anonymous" />
+		<style type="text/css">
+		   body{
+		    text-align: center;
+		   }
+		   #logo {
+		    text-align: left;
+		   }
+		</style>
+	</head>
+	<body>
+	  <!-- HTML -->
+	  <div class="fluid-container">
+	    <img src="https://www.capgemini.com/wp-content/uploads/2017/10/cg_logo.jpg" alt="Smiley face" width="400" id="logo" style="padding: 80px 0 60px 0" />
+	    <div> 
+	      <span id="timer" style="font-size: 5em; color: #5cb85c; padding-bottom: 20px"></span> 
+	    </div>
+	    <div id="loader">
+	      <i class="fa fa-spinner fa-spin" style="font-size:48px;color:#5cb85c;"></i>
+	    </div>
+	    <div id="randomPerson" style="font-size: 8em;"></div>
+	    <button type="button" class="btn btn-primary btn-lg" id="startBtn">Démarrer le STUM</button>
+	    <button type="button" class="btn btn-danger btn-lg" id="restartBtn"><i class="fa fa-refresh" style="font-size:24px"></i></button>
+	  </div>
+	      
+	  <!-- JavaScript -->
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js" integrity="sha256-egVvxkq6UBCQyKzRBrDHu8miZ5FOaVrjSqQqauKglKc=" crossorigin="anonymous"></script>
+	  <script type="text/javascript">
+	      
+	    $('#loader').hide()
+		$('#restartBtn').hide()
 
-    <div> 
-      <span id="timer" style="font-size: 5em; color: #5cb85c; padding-bottom: 20px"></span> 
-    </div>
+		var peopleArray = ["Yacine", "Kévin", "Ons", "Mathieu", "Mehdi", "Guillaume", "Sidiki"]
 
-    <div id="loader">
-      <i class="fa fa-spinner fa-spin" style="font-size:48px;color:#5cb85c;"></i>
-    </div>
-          
+		var timer = document.getElementById('timer')
+		timer.innerHTML = 1 + ":" + 00+0
 
-    <div id="randomPerson" style="font-size: 8em;"></div>
+		$('#restartBtn').click(function(){
+			location.reload()
+		})
 
+		$('#startBtn').one("click", function() {
+		    startTimer();
+		    $('#loader').show()
+		    $('#restartBtn').show()
+		})
+		  
+		$('#startBtn').click(function() {
+		  var startBtn = document.getElementById("startBtn")
+		  var randomPersonText = document.getElementById("randomPerson")
+		  var randomIndex = Math.floor(Math.random() * peopleArray.length)
+		  var randomPersonValue = peopleArray[randomIndex]
 
-    <button type="button" class="btn btn-primary btn-lg" id="startBtn">Démarrer le STUM</button>
-    <button type="button" class="btn btn-danger btn-lg" id="restartBtn"><i class="fa fa-refresh" style="font-size:24px"></i></button>
-  </div>
+		  startBtn.innerHTML = "Personne suivante ?";
+		  randomPersonText.innerHTML = randomPersonValue
 
-      
+		  var man = peopleArray.splice(randomIndex, 1)[0]
 
-    <!-- JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js" integrity="sha256-egVvxkq6UBCQyKzRBrDHu8miZ5FOaVrjSqQqauKglKc=" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-      
-      $('#loader').hide()
-	  $('#restartBtn').hide()
+		  if (randomPersonValue == null) {
+		    swal({
+		      title: 'Super STUM!',
+		      text: "Tous les membres de l'équipes ont parlés en moins de 15 min!",
+		      type: 'success',
+		      confirmButtonText: 'Fantastique!',
+		      confirmButtonColor: '#28a745'
+		    })
 
-	  var peopleArray = ["Yacine", "Kévin", "Ons", "Mathieu", "Mehdi", "Guillaume", "Sidiki"]
+		    $('#loader').hide()
+		    $('#timer').hide()
+		    $('#startBtn').hide()
 
-	  var timer = document.getElementById('timer')
-	  timer.innerHTML = 15 + ":" + 00+0;
+		    randomPersonText.innerHTML = 'Merci à tous'
+		  }
+		});
 
-	  $('#restartBtn').click(function(){
-		location.reload();
-	  })
+		function startTimer() {
+		  var presentTime = document.getElementById('timer').innerHTML;
+		  var timeArray = presentTime.split(/[:]+/)
+		  var m = timeArray[0]
+		  var s = checkSecond((timeArray[1] - 1))
+		  if(s==59){m=m-1}
+		   
+		  document.getElementById('timer').innerHTML = m + ":" + s
+		    
+		  if(m < 0) {
+		    $('#loader').hide()
+		    swal({
+		      title: 'Attention!',
+		      text: "Cela fait plus de 15 minutes que vous êtes en STUM!",
+		      type: 'warning',
+		      confirmButtonText: 'Ok, on fait vite!',
+		      confirmButtonColor: '#f8bb86'
+		    })
+		    setTimeout(0, 0)
+		    document.getElementById('timer').innerHTML = "Temps écoulé";
 
-	  $('#startBtn').one("click", function() {
-	      startTimer();
-	      $('#loader').show()
-	      $('#restartBtn').show()
-	  })
-	  
-	  $('#startBtn').click(function() {
-	    var startBtn = document.getElementById("startBtn")
-	    var randomPersonText = document.getElementById("randomPerson")
+		  } else {
+		      setTimeout(startTimer, 1000)
+		    }
+		  }
 
-	    var randomIndex = Math.floor(Math.random() * peopleArray.length)
-	    var randomPersonValue = peopleArray[randomIndex]
-
-	    startBtn.innerHTML = "Personne suivante ?";
-	    randomPersonText.innerHTML = randomPersonValue
-
-	    var man = peopleArray.splice(randomIndex, 1)[0]
-
-	    if (randomPersonValue == null) {
-
-	      swal({
-	        title: 'Super STUM!',
-	        text: "Tous les membres de l'équipes ont parlés en moins de 15 min!",
-	        type: 'success',
-	        confirmButtonText: 'Fantastique!',
-	      })
-
-	      $('#loader').hide()
-	      $('#timer').hide()
-	      $('#startBtn').hide()
-
-	      randomPersonText.innerHTML = 'Merci à tous'
-	      startBtn.innerHTML = "A demain!"
-
-	    }
-	  });
-
-
-	  function startTimer() {
-	    var presentTime = document.getElementById('timer').innerHTML;
-	    var timeArray = presentTime.split(/[:]+/);
-	    var m = timeArray[0];
-	    var s = checkSecond((timeArray[1] - 1));
-	    if(s==59){m=m-1}
-	   
-	    document.getElementById('timer').innerHTML = m + ":" + s;
-	    
-	    if(m < 0){
-	      $('#loader').hide()
-	      swal({
-	        title: 'Attention!',
-	        text: "Cela fait plus de 15 minutes que vous êtes en STUM!",
-	        type: 'warning',
-	        confirmButtonText: 'Ok, on fait vite!',
-	      })
-	      setTimeout(0, 0);
-	      document.getElementById('timer').innerHTML = "Temps écoulé";
-	    } else {
-	      setTimeout(startTimer, 1000);
-	    }
-	  }
-
-	  function checkSecond(sec) {
-	    if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
-	    if (sec < 0) {sec = "59"};
-	    return sec;
-	  }
-
-    </script>
-  </body>
+		  function checkSecond(sec) {
+		    if (sec < 10 && sec >= 0) {sec = "0" + sec} // add zero in front of numbers < 10
+		    if (sec < 0) {sec = "59"}
+		    return sec
+		  }
+	    </script>
+	</body>
 </html>
