@@ -37,6 +37,7 @@
 
 
     <button type="button" class="btn btn-primary btn-lg" id="startBtn">Démarrer le STUM</button>
+    <button type="button" class="btn btn-danger btn-lg" id="restartBtn"><i class="fa fa-refresh" style="font-size:24px"></i></button>
   </div>
 
       
@@ -49,81 +50,84 @@
     <script type="text/javascript">
       
       $('#loader').hide()
+	  $('#restartBtn').hide()
 
-      var peopleArray = ["Kévin", "Guillaume", "Mathieu", "Mehdi", "Ons", "Sidiki"]
+	  var peopleArray = ["Yacine", "Kévin", "Ons", "Mathieu", "Mehdi", "Guillaume", "Sidiki"]
 
-      var timer = document.getElementById('timer')
-      timer.innerHTML = 15 + ":" + 00+0;
+	  var timer = document.getElementById('timer')
+	  timer.innerHTML = 15 + ":" + 00+0;
 
-      $('#startBtn').one("click", function() {
-          startTimer();
-          $('#loader').show()
-      });
-      
-      $('#startBtn').click(function() {
+	  $('#restartBtn').click(function(){
+		location.reload();
+	  })
 
-        var startBtn = document.getElementById("startBtn")
-        var randomPersonText = document.getElementById("randomPerson")
+	  $('#startBtn').one("click", function() {
+	      startTimer();
+	      $('#loader').show()
+	      $('#restartBtn').show()
+	  })
+	  
+	  $('#startBtn').click(function() {
+	    var startBtn = document.getElementById("startBtn")
+	    var randomPersonText = document.getElementById("randomPerson")
 
-        var randomIndex = Math.floor(Math.random() * peopleArray.length)
-        var randomPersonValue = peopleArray[randomIndex]
+	    var randomIndex = Math.floor(Math.random() * peopleArray.length)
+	    var randomPersonValue = peopleArray[randomIndex]
 
-        startBtn.innerHTML = "Personne suivante ?";
-        randomPersonText.innerHTML = randomPersonValue
+	    startBtn.innerHTML = "Personne suivante ?";
+	    randomPersonText.innerHTML = randomPersonValue
 
-        var man = peopleArray.splice(randomIndex, 1)[0]
+	    var man = peopleArray.splice(randomIndex, 1)[0]
 
-        if (peopleArray == '') {
+	    if (randomPersonValue == null) {
 
-          swal({
-            title: 'Super STUM!',
-            text: "Tous les membres de l'équipes ont parlés en moins de 15 min!",
-            type: 'success',
-            confirmButtonText: 'Fantastique!',
-          })
+	      swal({
+	        title: 'Super STUM!',
+	        text: "Tous les membres de l'équipes ont parlés en moins de 15 min!",
+	        type: 'success',
+	        confirmButtonText: 'Fantastique!',
+	      })
 
-          $('#loader').hide()
-          $('#timer').hide()
-          randomPersonText.innerHTML = 'Merci à tous'
-          startBtn.innerHTML = "A demain!"
-        }
+	      $('#loader').hide()
+	      $('#timer').hide()
+	      $('#startBtn').hide()
 
-      });
+	      randomPersonText.innerHTML = 'Merci à tous'
+	      startBtn.innerHTML = "A demain!"
 
-
-      function startTimer() {
-        var presentTime = document.getElementById('timer').innerHTML;
-        var timeArray = presentTime.split(/[:]+/);
-        var m = timeArray[0];
-        var s = checkSecond((timeArray[1] - 1));
-        if(s==59){m=m-1}
-        
-        document.getElementById('timer').innerHTML = m + ":" + s;
-        
-
-        if(m < 0){
-          $('#loader').hide()
-          swal({
-            title: 'Attention!',
-            text: "Cela fait plus de 15 minutes que vous êtes en STUM!",
-            type: 'warning',
-            confirmButtonText: 'Ok, on fait vite!',
-          })
-
-          setTimeout(0, 0);
-          document.getElementById('timer').innerHTML = "Temps écoulé";
+	    }
+	  });
 
 
-        } else {
-          setTimeout(startTimer, 1000);
-        }
-      }
+	  function startTimer() {
+	    var presentTime = document.getElementById('timer').innerHTML;
+	    var timeArray = presentTime.split(/[:]+/);
+	    var m = timeArray[0];
+	    var s = checkSecond((timeArray[1] - 1));
+	    if(s==59){m=m-1}
+	   
+	    document.getElementById('timer').innerHTML = m + ":" + s;
+	    
+	    if(m < 0){
+	      $('#loader').hide()
+	      swal({
+	        title: 'Attention!',
+	        text: "Cela fait plus de 15 minutes que vous êtes en STUM!",
+	        type: 'warning',
+	        confirmButtonText: 'Ok, on fait vite!',
+	      })
+	      setTimeout(0, 0);
+	      document.getElementById('timer').innerHTML = "Temps écoulé";
+	    } else {
+	      setTimeout(startTimer, 1000);
+	    }
+	  }
 
-      function checkSecond(sec) {
-        if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
-        if (sec < 0) {sec = "59"};
-        return sec;
-      }
+	  function checkSecond(sec) {
+	    if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
+	    if (sec < 0) {sec = "59"};
+	    return sec;
+	  }
 
     </script>
   </body>
