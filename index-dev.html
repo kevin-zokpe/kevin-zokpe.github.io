@@ -31,26 +31,31 @@
 	        -webkit-box-shadow: none !important;
 	        box-shadow: none  !important;
 	      }
+	      .page-footer {
+		    position: absolute;
+		    bottom: 0;
+		    width: 100%;
+		  }
 		</style>
 	</head>
 	<body>
 	  <!-- HTML -->
 	  <div class="fluid-container">
-	    <img src="https://www.capgemini.com/wp-content/uploads/2017/10/cg_logo.jpg" alt="Smiley face" width="350" id="logo" style="padding: 20px 0 0 0" />
+	    <img src="https://www.capgemini.com/wp-content/uploads/2017/10/cg_logo.jpg" alt="Smiley face" width="350" id="logo" style="padding: 10px 0 0 0" />
+
+		<h1 class="testo display-4 text-secondary" style="font-size: 18px"></h1>
 
 		<!--  CONFIG  -->
 		<div id="config" style="margin: 18px 0 20px 0">
-
 			<!--  DUREE  -->
 			<div class="input-group" style="margin: auto; width: 50%; text-align: center;">
 				<div class="form-group" style="margin-left: 38%">
 				    <h4 class="text-success">Durée</h4>
 				    <select class="form-control" id="stumTimeOptions" onchange="setTimeOnChange()">
+				      <option value="5">5 minutes</option>
 				      <option value="10">10 minutes</option>
 				      <option value="15" selected>15 minutes</option>
 				      <option value="20">20 minutes</option>
-				      <option value="25">25 minutes</option>
-				      <option value="30">30 minutes</option>
 				    </select>
 				</div>
 			</div>
@@ -69,7 +74,7 @@
 			<small id="listHelp" class="form-text text-muted">Un ou plusieurs participants séparés par des virgules</small>
 
 			<div id ="listResult" style="margin: 10px 80px 20px 80px">
-				<span id="actualListResult"  class="text-success" style="font-size: 2em;"></span>
+				<span id="actualListResult"  class="text-success" style="font-size: 1.5em;"></span>
 			</div>
 
 			<button id="btnListValidate" type="button" class="btn btn-success"><i class="fa fa-check"></i></button>
@@ -81,12 +86,12 @@
 	    </div>
 		<!--  LOADER  -->
 	    <div id="loader">
-	      <i class="fa fa-spinner fa-spin" style="font-size:48px;color:#5cb85c;"></i>
+	      <i class="fa fa-spinner fa-spin" style="font-size:38px;color:#5cb85c;"></i>
 	    </div>
 
-	    <div id="randomPerson" style="font-size: 8em; margin: -30px 0 -20px 0"></div>
+	    <div id="randomPerson" style="font-size: 8em; margin: -15px 0 -15px 0"></div>
 
-	    <div id ="listResult2" style="margin: 20px 0px 20px 0px">
+	    <div id ="listResult2" style="margin: 6px 0px 15px 0px">
 			<span id="actualListResult2"  class="text-success" style="font-size: 2em;" ></span>
 		</div>
 
@@ -96,12 +101,32 @@
 	 
 	  </div>
 
-		  <!-- JavaScript -->
+	  <!-- JavaScript -->
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js" integrity="sha256-egVvxkq6UBCQyKzRBrDHu8miZ5FOaVrjSqQqauKglKc=" crossorigin="anonymous"></script>
+
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
 	  <script type="text/javascript">
+
+
+$(document).ready(function() {
+
+	  	// Set curent Date and Time
+		moment.locale('fr')
+		displayTime();
+
+		function displayTime() {
+		    var titi = moment().format('Do MMMM YYYY, HH:mm:ss');
+			$('.testo').text(titi)
+		    setTimeout(displayTime, 1000);
+		}
+
+
+
+
 
 	    var peopleArray = [];
 	    var selectedStumTime = $('#stumTimeOptions').val(); // Default STUM time
@@ -171,8 +196,6 @@
 			if (peopleArray.length > 0) {
 				rmConfigVueAndShowTime();
 				$('#startBtn').show();
-
-				//selectedStumTime =  localStorage.getItem('oldStumTime'); // ??
 				saveConfig(selectedStumTime, peopleArray)
 			}
 			localStorage.removeItem('oldPeopleArray');
@@ -193,7 +216,7 @@
 				      title: ('Parfait'),
 				      text: "Les paramètres du STUM sont enregistrés pour les prochaines fois",
 				      type: 'success',
-				      confirmButtonText: 'Génial!',
+				      confirmButtonText: 'Génial !',
 				      confirmButtonColor: '#28a745'
 				    })
 	    		}
@@ -238,9 +261,6 @@
 	    // >>>>>>
 		
 		$('#resetBtn').click(function() {
-			//peopleArray = localStorage.getItem('peopleArray').split(',');
-			//selectedStumTime = localStorage.getItem('stumTime') !== null ? localStorage.getItem('stumTime') : "15";
-
 			localStorage.clear();
 			location.reload();
 
@@ -248,7 +268,7 @@
 			localStorage.setItem('oldStumTime', selectedStumTime)
 		})
 
-		$('#restartBtn').click(function(){
+		$('#restartBtn').click(function() {
 			location.reload()
 		})
 
@@ -257,27 +277,26 @@
 		    $('#loader').show()
 		    $('#restartBtn').show()
 		    $('#resetBtn').hide()
+		    $('.footer-copyright').hide();
 		})
 		  
 		$('#startBtn').click(function() {
 		  var startBtn = document.getElementById("startBtn")
 		  var randomPersonText = document.getElementById("randomPerson")
 		  var randomIndex = Math.floor(Math.random() * peopleArray.length)
-		  var randomPersonValue = peopleArray[randomIndex]
-		  startBtn.innerHTML = "Personne suivante ?";
-		  // Mise à jour des participants
-		  peopleArray.splice(randomIndex, 0);
-		  $('#actualListResult2').text(peopleArray.join(", "));
 
+		  var randomPersonValue = peopleArray.splice(randomIndex, 1)[0];
+		  $('#actualListResult2').text(peopleArray.join(", ")); // Mise à jour des participants
+
+		  startBtn.innerHTML = "Personne suivante ?";
 		  randomPersonText.innerHTML = randomPersonValue
-		  var man = peopleArray.splice(randomIndex, 1)[0]
 
 		  if (randomPersonValue == null) {
 		    swal({
 		      title: 'Super STUM!',
-		      text: "Tous les membres de l'équipes ont parlés en moins de " + selectedStumTime + " minutes!",
+		      text: "Tous les membres de l'équipe ont parlé en moins de " + selectedStumTime + " minutes !",
 		      type: 'success',
-		      confirmButtonText: 'Fantastique!',
+		      confirmButtonText: 'Fantastique !',
 		      confirmButtonColor: '#28a745'
 		    })
 
@@ -298,9 +317,12 @@
 		  if(s==59){m=m-1}
 		   
 		  document.getElementById('timer').innerHTML = m + ":" + s
-		    
 		  if(m < 0) {
 		    $('#loader').hide()
+
+		    // Start negative timer here
+
+
 		    swal({
 		      title: 'Attention!',
 		      text: "Cela fait plus de " + selectedStumTime + " minutes que vous êtes en STUM!",
@@ -321,9 +343,13 @@
 		    if (sec < 0) {sec = "59"}
 		    return sec
 		  }
-
-
-
+		});
 	    </script>
 	</body>
+	<footer class="page-footer font-small">
+	  <div class="footer-copyright text-center py-3">
+	   <small class="text-muted"><i class="fa fa-bolt" style="font-size:18px;color:#fdd835"></i> 
+	      by <a href="mailto:ange-kevin.zokpe@capgemini.com,kzokpe@gmail.com?subject=STUM Watcher" target="_blank">Kévin ZOKPE</a></small>
+	  </div>
+	</footer>
 </html>
