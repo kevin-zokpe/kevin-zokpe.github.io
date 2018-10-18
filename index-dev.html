@@ -36,6 +36,16 @@
 		    bottom: 0;
 		    width: 100%;
 		  }
+		  #timer {
+		  	padding-bottom: 20px;
+		  	font-size: 5em;
+		  } 
+		  .fa-spin {
+		  	font-size:38px;
+		  }
+		  #actualListResult2 {
+			font-size: 2em; 
+		  }
 		</style>
 	</head>
 	<body>
@@ -43,7 +53,7 @@
 	  <div class="fluid-container">
 	    <img src="https://www.capgemini.com/wp-content/uploads/2017/10/cg_logo.jpg" alt="Smiley face" width="350" id="logo" style="padding: 10px 0 0 0" />
 
-		<h1 class="testo display-4 text-secondary" style="font-size: 18px"></h1>
+		<h1 class="now display-4 text-secondary" style="font-size: 18px"></h1>
 
 		<!--  CONFIG  -->
 		<div id="config" style="margin: 18px 0 20px 0">
@@ -74,7 +84,7 @@
 			<small id="listHelp" class="form-text text-muted">Un ou plusieurs participants séparés par des virgules</small>
 
 			<div id ="listResult" style="margin: 10px 80px 20px 80px">
-				<span id="actualListResult"  class="text-success" style="font-size: 1.5em;"></span>
+				<span id="actualListResult" style="font-size: 1.5em; color: #5cb85c"></span>
 			</div>
 
 			<button id="btnListValidate" type="button" class="btn btn-success"><i class="fa fa-check"></i></button>
@@ -82,17 +92,17 @@
 
 	   <!--  TIMER  -->
 	   	<div>
-	      <span id="timer" style="font-size: 5em; color: #5cb85c; padding-bottom: 20px"></span>
+	      <span id="timer" style="color: #5cb85c; "></span>
 	    </div>
 		<!--  LOADER  -->
 	    <div id="loader">
-	      <i class="fa fa-spinner fa-spin" style="font-size:38px;color:#5cb85c;"></i>
+	      <i class="fa fa-spinner fa-spin" style="color:#5cb85c;"></i>
 	    </div>
 
 	    <div id="randomPerson" style="font-size: 8em; margin: -15px 0 -15px 0"></div>
 
 	    <div id ="listResult2" style="margin: 6px 0px 15px 0px">
-			<span id="actualListResult2"  class="text-success" style="font-size: 2em;" ></span>
+			<span id="actualListResult2" style="color: #5cb85c" ></span>
 		</div>
 
 	    <button type="button" class="btn btn-primary btn-lg" id="startBtn" style="margin-bottom: 100px">Démarrer le STUM</button>
@@ -111,22 +121,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
 	  <script type="text/javascript">
 
-
-$(document).ready(function() {
-
 	  	// Set curent Date and Time
 		moment.locale('fr')
 		displayTime();
 
 		function displayTime() {
-		    var titi = moment().format('Do MMMM YYYY, HH:mm:ss');
-			$('.testo').text(titi)
+			$('.now').text(moment().format('Do MMMM YYYY, HH:mm:ss'))
 		    setTimeout(displayTime, 1000);
 		}
-
-
-
-
 
 	    var peopleArray = [];
 	    var selectedStumTime = $('#stumTimeOptions').val(); // Default STUM time
@@ -318,11 +320,8 @@ $(document).ready(function() {
 		   
 		  document.getElementById('timer').innerHTML = m + ":" + s
 		  if(m < 0) {
-		    $('#loader').hide()
 
 		    // Start negative timer here
-
-
 		    swal({
 		      title: 'Attention!',
 		      text: "Cela fait plus de " + selectedStumTime + " minutes que vous êtes en STUM!",
@@ -330,20 +329,31 @@ $(document).ready(function() {
 		      confirmButtonText: 'Ok, on fait vite!',
 		      confirmButtonColor: '#f8bb86'
 		    })
-		    setTimeout(0, 0)
-		    document.getElementById('timer').innerHTML = "Temps écoulé";
-
+		   
+			startBadTimer();
 		  } else {
 		      setTimeout(startTimer, 1000)
 		    }
 		  }
+
+			function startBadTimer()
+			{
+			    var startTimestamp = moment().startOf("day");
+				$('#timer').attr('style', 'color: #dc3545');
+			    $('.fa-spin').attr('style', 'color: #dc3545');
+				$('#actualListResult2').attr('style', 'color: #dc3545');
+			    
+			    setInterval(function() {
+			    startTimestamp.add(1, 'second');
+				$('#timer').text(startTimestamp.format('mm:ss'));
+			    }, 1000);
+			}
 
 		  function checkSecond(sec) {
 		    if (sec < 10 && sec >= 0) {sec = "0" + sec} // add zero in front of numbers < 10
 		    if (sec < 0) {sec = "59"}
 		    return sec
 		  }
-		});
 	    </script>
 	</body>
 	<footer class="page-footer font-small">
